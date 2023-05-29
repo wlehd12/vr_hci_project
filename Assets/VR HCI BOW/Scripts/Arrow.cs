@@ -16,6 +16,19 @@ public class Arrow : XRGrabInteractable
     private Vector3 lastPosition = Vector3.zero;
     private bool launched = false;
 
+    public GameObject hitEffect;
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.tag == "Arrow")
+        {
+            GameObject hit = Instantiate(hitEffect, collision.transform.position,
+                Quaternion.identity) as GameObject;
+            Destroy(hit, hit.GetComponent<ParticleSystem>().duration + 0.2f);
+            Destroy(collision.gameObject);
+        }
+    }
+
     protected override void Awake()
     {
         base.Awake();

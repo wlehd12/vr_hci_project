@@ -3,7 +3,13 @@ guid: 4efde785f55475d4faf016df659306fa
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_InteractionManager: {instanceID: 0}
+  - m_CustomReticle: {instanceID: 0}
+  - m_AttachTransform: {instanceID: 0}
+  - tip: {instanceID: 0}
+  - hitEffect: {fileID: 5024009746357069194, guid: ec3f674830402cc45bce805cf6493db7,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

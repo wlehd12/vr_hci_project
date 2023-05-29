@@ -4,6 +4,7 @@ public class Target : MonoBehaviour, IArrowHittable
 {
     public float forceAmount = 1.0f;
     public Material otherMaterial = null;
+    public GameObject hitEffect;
 
     public void Hit(Arrow arrow)
     {
