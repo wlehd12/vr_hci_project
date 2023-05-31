@@ -24,10 +24,8 @@ public class Notch : XRSocketInteractor
     {
         base.OnEnable();
 
-        // Arrow is released once the puller is released
         PullMeasurer.selectExited.AddListener(ReleaseArrow);
 
-        // Move the point where the arrow is attached
         PullMeasurer.Pulled.AddListener(MoveAttach);
     }
 

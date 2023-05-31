@@ -62,15 +62,12 @@ public class PullMeasurer : XRBaseInteractable
 
     private float CalculatePull(Vector3 pullPosition)
     {
-        // Direction, and length
         Vector3 pullDirection = pullPosition - start.position;
         Vector3 targetDirection = end.position - start.position;
 
-        // Figure out out the pull direction
         float maxLength = targetDirection.magnitude;
         targetDirection.Normalize();
 
-        // What's the actual distance?
         float pullValue = Vector3.Dot(pullDirection, targetDirection) / maxLength;
         pullValue = Mathf.Clamp(pullValue, 0.0f, 1.0f);
 
@@ -85,7 +82,6 @@ public class PullMeasurer : XRBaseInteractable
 
     private void SetPullValues(Vector3 newPullPosition, float newPullAmount)
     {
-        // If it's a new value
         if (newPullAmount != pullAmount)
         {
             pullAmount = newPullAmount;

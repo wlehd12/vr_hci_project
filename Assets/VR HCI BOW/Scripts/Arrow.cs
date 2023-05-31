@@ -16,18 +16,6 @@ public class Arrow : XRGrabInteractable
     private Vector3 lastPosition = Vector3.zero;
     private bool launched = false;
 
-    public GameObject hitEffect;
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if(collision.collider.tag == "Arrow")
-        {
-            GameObject hit = Instantiate(hitEffect, collision.transform.position,
-                Quaternion.identity) as GameObject;
-            Destroy(hit, hit.GetComponent<ParticleSystem>().duration + 0.2f);
-            Destroy(collision.gameObject);
-        }
-    }
 
     protected override void Awake()
     {
@@ -62,6 +50,7 @@ public class Arrow : XRGrabInteractable
             Launch(notch);
     }
 
+
     private void Launch(Notch notch)
     {
         // Double-check incase the bow is dropped with arrow socketed
@@ -87,7 +76,6 @@ public class Arrow : XRGrabInteractable
 
     private void ApplyForce(PullMeasurer pullMeasurer)
     {
-        // Apply force to the arrow
         float power = pullMeasurer.PullAmount;
         Vector3 force = transform.forward * (power * speed);
         rigidbody.AddForce(force);
@@ -136,7 +124,6 @@ public class Arrow : XRGrabInteractable
 
     private void TogglePhysics(bool value)
     {
-        // Disable physics for childing and grabbing
         rigidbody.isKinematic = !value;
         rigidbody.useGravity = value;
     }
