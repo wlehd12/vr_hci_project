@@ -24,8 +24,10 @@ public class Notch : XRSocketInteractor
     {
         base.OnEnable();
 
+        // Arrow is released once the puller is released
         PullMeasurer.selectExited.AddListener(ReleaseArrow);
 
+        // Move the point where the arrow is attached
         PullMeasurer.Pulled.AddListener(MoveAttach);
     }
 
@@ -40,7 +42,10 @@ public class Notch : XRSocketInteractor
     {
         // Only release if the target is an arrow using custom deselect
         if (selectTarget is Arrow && PullMeasurer.PullAmount > releaseThreshold)
+        {
             CustomManager.ForceDeselect(this);
+            FindObjectOfType<TrailRenderer>().emitting = true;
+        }
     }
 
     public void MoveAttach(Vector3 pullPosition, float pullAmount)

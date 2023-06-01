@@ -16,12 +16,27 @@ public class Arrow : XRGrabInteractable
     private Vector3 lastPosition = Vector3.zero;
     private bool launched = false;
 
+    public GameObject hitEffect;
+    public TrailRenderer trail;
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.tag == "Arrow")
+        {
+            GameObject hit = Instantiate(hitEffect, collision.transform.position,
+                Quaternion.identity) as GameObject;
+            Destroy(hit, hit.GetComponent<ParticleSystem>().duration + 0.2f);
+            Destroy(collision.gameObject);
+        }
+    }
 
     protected override void Awake()
     {
         base.Awake();
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
+        trail = GetComponent<TrailRenderer>();
+        trail.emitting = false;
     }
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
@@ -50,7 +65,6 @@ public class Arrow : XRGrabInteractable
             Launch(notch);
     }
 
-
     private void Launch(Notch notch)
     {
         // Double-check incase the bow is dropped with arrow socketed
@@ -76,6 +90,7 @@ public class Arrow : XRGrabInteractable
 
     private void ApplyForce(PullMeasurer pullMeasurer)
     {
+        // Apply force to the arrow
         float power = pullMeasurer.PullAmount;
         Vector3 force = transform.forward * (power * speed);
         rigidbody.AddForce(force);
@@ -124,6 +139,7 @@ public class Arrow : XRGrabInteractable
 
     private void TogglePhysics(bool value)
     {
+        // Disable physics for childing and grabbing
         rigidbody.isKinematic = !value;
         rigidbody.useGravity = value;
     }
@@ -140,6 +156,8 @@ public class Arrow : XRGrabInteractable
         // Check if the hit object has a component that uses the hittable interface
         GameObject hitObject = hit.transform.gameObject;
         IArrowHittable hittable = hitObject ? hitObject.GetComponent<IArrowHittable>() : null;
+
+        trail.emitting = false;
 
         // If we find a valid component, call whatever functionality it has
         if (hittable != null)

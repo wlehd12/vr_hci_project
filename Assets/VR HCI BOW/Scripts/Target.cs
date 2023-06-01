@@ -11,12 +11,16 @@ public class Target : MonoBehaviour, IArrowHittable
     public UnityEvent OnMaterialChanged;
     private Material originalMaterial;
     private MeshRenderer meshRenderer;
-    
 
     public void Hit(Arrow arrow)
     {
         StartCoroutine(ApplyMaterial());
         ApplyForce(arrow.transform.forward);
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+
     }
 
     private IEnumerator ApplyMaterial()
@@ -44,12 +48,4 @@ public class Target : MonoBehaviour, IArrowHittable
         originalMaterial = meshRenderer.material;
     }
 
-    private void Update()
-    {
-        if (meshRenderer.material != originalMaterial)
-        {
-            originalMaterial = meshRenderer.material;
-            OnMaterialChanged.Invoke();
-        }
-    }
 }
