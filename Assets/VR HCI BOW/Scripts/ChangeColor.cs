@@ -17,6 +17,5 @@ public class ChangeColor : MonoBehaviour, IArrowHittable
 
     void Start()
     {
-        
     }
 }

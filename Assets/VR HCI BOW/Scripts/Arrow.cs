@@ -17,10 +17,12 @@ public class Arrow : XRGrabInteractable
     private bool launched = false;
 
     public GameObject hitEffect;
+    public TrailRenderer trail;
+    private GameObject counting;
 
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.collider.tag == "Arrow")
+        if (collision.collider.tag == "Arrow")
         {
             GameObject hit = Instantiate(hitEffect, collision.transform.position,
                 Quaternion.identity) as GameObject;
@@ -34,6 +36,9 @@ public class Arrow : XRGrabInteractable
         base.Awake();
         collider = GetComponent<Collider>();
         rigidbody = GetComponent<Rigidbody>();
+        trail = GetComponent<TrailRenderer>();
+        trail.emitting = false;
+        counting = GameObject.Find("Counting");
     }
 
     protected override void OnSelectEntering(SelectEnterEventArgs args)
@@ -146,6 +151,9 @@ public class Arrow : XRGrabInteractable
         // Child to hit object
         Transform newParent = hit.collider.transform;
         transform.SetParent(newParent);
+
+
+        counting.GetComponent<Counting>().isCountUp = true;
     }
 
     private void CheckForHittable(RaycastHit hit)
@@ -153,6 +161,8 @@ public class Arrow : XRGrabInteractable
         // Check if the hit object has a component that uses the hittable interface
         GameObject hitObject = hit.transform.gameObject;
         IArrowHittable hittable = hitObject ? hitObject.GetComponent<IArrowHittable>() : null;
+
+        trail.emitting = false;
 
         // If we find a valid component, call whatever functionality it has
         if (hittable != null)

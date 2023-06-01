@@ -11,12 +11,18 @@ public class Target : MonoBehaviour, IArrowHittable
     public UnityEvent OnMaterialChanged;
     private Material originalMaterial;
     private MeshRenderer meshRenderer;
-    
+
+    private GameObject counting;
 
     public void Hit(Arrow arrow)
     {
         StartCoroutine(ApplyMaterial());
         ApplyForce(arrow.transform.forward);
+    }
+
+    void OnTriggerEnter(Collider col)
+    {
+
     }
 
     private IEnumerator ApplyMaterial()
@@ -26,6 +32,8 @@ public class Target : MonoBehaviour, IArrowHittable
         Material originalMaterial = meshRenderer.material;
 
         meshRenderer.material = otherMaterial;
+
+        counting.ScoreUP();
 
         yield return new WaitForSeconds(0.5f);
 
@@ -42,14 +50,10 @@ public class Target : MonoBehaviour, IArrowHittable
     {
         meshRenderer = GetComponent<MeshRenderer>();
         originalMaterial = meshRenderer.material;
+        counting = GameObject.Find("Counting");
     }
 
     private void Update()
     {
-        if (meshRenderer.material != originalMaterial)
-        {
-            originalMaterial = meshRenderer.material;
-            OnMaterialChanged.Invoke();
-        }
     }
 }
